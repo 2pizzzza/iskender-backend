@@ -5,12 +5,13 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // LoginRequest defines model for LoginRequest.
 type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    openapi_types.Email `json:"email"`
+	Password string              `json:"password"`
 }
 
 // LoginResponse defines model for LoginResponse.
@@ -18,14 +19,32 @@ type LoginResponse struct {
 	Token *string `json:"token,omitempty"`
 }
 
+// RegisterRequest defines model for RegisterRequest.
+type RegisterRequest struct {
+	Email    openapi_types.Email `json:"email"`
+	Password string              `json:"password"`
+	Username string              `json:"username"`
+}
+
+// RegisterResponse defines model for RegisterResponse.
+type RegisterResponse struct {
+	Token *string `json:"token,omitempty"`
+}
+
 // PostLoginJSONRequestBody defines body for PostLogin for application/json ContentType.
 type PostLoginJSONRequestBody = LoginRequest
 
+// PostRegisterJSONRequestBody defines body for PostRegister for application/json ContentType.
+type PostRegisterJSONRequestBody = RegisterRequest
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-
+	// Authenticate a user
 	// (POST /login)
 	PostLogin(c *fiber.Ctx) error
+	// Register a new user
+	// (POST /register)
+	PostRegister(c *fiber.Ctx) error
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -39,6 +58,12 @@ type MiddlewareFunc fiber.Handler
 func (siw *ServerInterfaceWrapper) PostLogin(c *fiber.Ctx) error {
 
 	return siw.Handler.PostLogin(c)
+}
+
+// PostRegister operation middleware
+func (siw *ServerInterfaceWrapper) PostRegister(c *fiber.Ctx) error {
+
+	return siw.Handler.PostRegister(c)
 }
 
 // FiberServerOptions provides options for the Fiber server.
@@ -63,5 +88,7 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 	}
 
 	router.Post(options.BaseURL+"/login", wrapper.PostLogin)
+
+	router.Post(options.BaseURL+"/register", wrapper.PostRegister)
 
 }

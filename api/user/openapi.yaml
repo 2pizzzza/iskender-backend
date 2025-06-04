@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: Iskender API
+  version: 1.0.0
+  description: User authentication API for login and registration
+
+paths:
+  /login:
+    post:
+      operationId: PostLogin
+      summary: Authenticate a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad Request – malformed JSON or missing fields
+        '401':
+          description: Unauthorized – invalid email or password
+        '500':
+          description: Internal Server Error
+
+  /register:
+    post:
+      operationId: PostRegister
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Bad Request – missing or invalid input
+        '409':
+          description: Conflict – user with this email already exists
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+
+    RegisterResponse:
+      type: object
+      properties:
+        token:
+          type: string

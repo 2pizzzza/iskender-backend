@@ -2,6 +2,6 @@ package user
 
 import "context"
 
-type UserRepository interface{
-	GetUserByUsername(ctx context.Context, username string) (User, error)
+type UserRepository interface {
+	GetUserByUsernameAndPassword(ctx context.Context, req *LoginUserDTO) (*User, error)
 }

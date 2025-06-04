@@ -9,12 +9,17 @@ import (
 	"context"
 )
 
-const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, username, email, password, created_at FROM Users WHERE username = $1
+const getUserByUsernameAndPassword = `-- name: GetUserByUsernameAndPassword :one
+SELECT id, username, email, password, created_at FROM Users WHERE email = $1 AND password = $2
 `
 
-func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {
-	row := q.db.QueryRow(ctx, getUserByUsername, username)
+type GetUserByUsernameAndPasswordParams struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+func (q *Queries) GetUserByUsernameAndPassword(ctx context.Context, arg GetUserByUsernameAndPasswordParams) (User, error) {
+	row := q.db.QueryRow(ctx, getUserByUsernameAndPassword, arg.Email, arg.Password)
 	var i User
 	err := row.Scan(
 		&i.ID,

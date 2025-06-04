@@ -9,7 +9,7 @@ import (
 )
 
 type Querier interface {
-	GetUserByUsername(ctx context.Context, username string) (User, error)
+	GetUserByUsernameAndPassword(ctx context.Context, arg GetUserByUsernameAndPasswordParams) (User, error)
 }
 
 var _ Querier = (*Queries)(nil)

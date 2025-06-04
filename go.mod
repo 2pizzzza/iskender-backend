@@ -4,11 +4,12 @@ go 1.24.1
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.8
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/golang-migrate/migrate/v4 v4.18.3
 	github.com/jackc/pgx/v5 v5.7.5
-	github.com/rs/cors v1.11.1
 	github.com/spf13/viper v1.20.1
 	go.uber.org/zap v1.27.0
+	golang.org/x/crypto v0.37.0
 )
 
 require (
@@ -51,7 +52,6 @@ require (
 	github.com/vmware-labs/yaml-jsonpath v0.3.2 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect

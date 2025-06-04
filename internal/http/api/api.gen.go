@@ -9,8 +9,8 @@ import (
 
 // LoginRequest defines model for LoginRequest.
 type LoginRequest struct {
+	Email    string `json:"email"`
 	Password string `json:"password"`
-	Username string `json:"username"`
 }
 
 // LoginResponse defines model for LoginResponse.

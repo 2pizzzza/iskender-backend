@@ -12,7 +12,5 @@ func main() {
 	if err != nil {
 		fmt.Println("%w", err)
 	}
-
-	fmt.Println(cfg)
 	app.New(cfg)
 }

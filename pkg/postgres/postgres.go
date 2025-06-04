@@ -19,42 +19,42 @@ type Storage struct {
 }
 
 func New(ctx context.Context, conf *config.Config) (*Storage, error) {
-    dsn := fmt.Sprintf(
-        "postgres://%s:%s@%s:%s/%s?sslmode=disable",
-        conf.Database.Username,
-        conf.Database.Password,
-        conf.Database.Host,
-        conf.Database.Port,
-        conf.Database.DbName,
-    )
+	dsn := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		conf.Database.Username,
+		conf.Database.Password,
+		conf.Database.Host,
+		conf.Database.Port,
+		conf.Database.DbName,
+	)
 
-    cfg, err := pgxpool.ParseConfig(dsn)
-    if err != nil {
-        return nil, fmt.Errorf("failed to parse db config: %v", err)
-    }
+	cfg, err := pgxpool.ParseConfig(dsn)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse db config: %v", err)
+	}
 
-    cfg.MaxConns = 10
-    cfg.MinConns = 1
-    cfg.MaxConnLifetime = time.Minute * 5
+	cfg.MaxConns = 10
+	cfg.MinConns = 1
+	cfg.MaxConnLifetime = time.Minute * 5
 
-    pool, err := pgxpool.NewWithConfig(ctx, cfg)
-    if err != nil {
-        return nil, fmt.Errorf("failed to connect to postgres: %v", err)
-    }
+	pool, err := pgxpool.NewWithConfig(ctx, cfg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to postgres: %v", err)
+	}
 
-    if err := pool.Ping(ctx); err != nil {
-        pool.Close()
-        return nil, fmt.Errorf("failed to ping database: %v", err)
-    }
+	if err := pool.Ping(ctx); err != nil {
+		pool.Close()
+		return nil, fmt.Errorf("failed to ping database: %v", err)
+	}
 
-    var result int
-    err = pool.QueryRow(ctx, "SELECT 1").Scan(&result)
-    if err != nil {
-        pool.Close()
-        return nil, fmt.Errorf("failed to execute test query: %v", err)
-    }
+	var result int
+	err = pool.QueryRow(ctx, "SELECT 1").Scan(&result)
+	if err != nil {
+		pool.Close()
+		return nil, fmt.Errorf("failed to execute test query: %v", err)
+	}
 
-    return &Storage{Pool: pool}, nil
+	return &Storage{Pool: pool}, nil
 }
 
 func RunMigration(conf *config.Config) error {

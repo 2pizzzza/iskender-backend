@@ -22,7 +22,6 @@ func New(cfg *config.Config) {
 	if err != nil {
 		fmt.Println("%w", err)
 	}
-	log.Info("Logger successful initialization")
 
 	pg, err := postgres.New(ctx, cfg)
 	if err != nil {

@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"fmt"
-
 	"github.com/2pizzzza/IskenderBackend/internal/domain/user"
 )
 

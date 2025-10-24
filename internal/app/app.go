@@ -33,8 +33,6 @@ func New(cfg *config.Config) {
 		os.Exit(1)
 	}
 
-	_ = intPostgres.New(pg.Pool)
-
 	userRepo := intPostgres.NewUserRepository(pg.Pool)
 	userSrv := userService.NewUserService(userRepo)
 	userH := userHandler.NewUserHandler(userSrv)
